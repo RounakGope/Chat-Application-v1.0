@@ -1,31 +1,61 @@
-import React from 'react'
+import React from "react";
 
-const joincreateroom = () => {
+const JoinCreateRoom = () => {
   return (
+    <div className="min-h-screen flex items-center justify-center bg-black text-white p-4">
+      <div className="bg-neutral-900 border border-gray-700 shadow-lg rounded-3xl p-10 flex flex-col gap-8 items-center w-full max-w-md">
+        <h1 className="text-3xl font-bold text-center text-white tracking-wide">
+          Join or Create Room
+        </h1>
 
-    <div className='flex border  min-h-screen items-center justify-center'>
-        <div className='p-8  flex flex-col gap-9 rounded-2xl items-center w-full max-w-md dark:bg-gray-700 '>
-            <h1 className='text-2xl text-center font-bold'>Join or Create</h1>
-            <div> 
-                <label htmlFor="name" className='font-mono mb-10'>Enter Your Name</label>
-                <input type="text" id='name' className='w-full dark:bg-neutral-500 px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500   transition duration-200'
- />
-            </div>
-            <div> 
-                <label htmlFor="roomId" className='font-mono mb-10'>Enter Room Id</label>
-                <input type="text" id='roomId' className='w-full dark:bg-neutral-500 px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500  transition duration-200' />
-            </div>
-            <div className='flex gap-4'>
-                <button className='button dark:bg-green-600 rounded-2xl px-4 py-2 hover:dark:bg-green-800 transition-colors duration-300'>Join Room</button>
-                <button className='button dark:bg-orange-600 rounded-2xl px-4 py-2 hover:dark:bg-orange-800 transition-colors duration-300'>Create Room</button>
-           
-            </div>
-            
+        {/* Name Input */}
+        <div className="w-full">
+          <label
+            htmlFor="name"
+            className="block mb-2 text-gray-300 font-medium tracking-wide"
+          >
+            Enter Your Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            placeholder="e.g., Rounak"
+            className="w-full bg-black text-white px-4 py-3 rounded-xl border border-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-400 placeholder-gray-500"
+          />
         </div>
-       
-      
-    </div>
-  )
-}
 
-export default joincreateroom
+        {/* Room ID Input */}
+        <div className="w-full">
+          <label
+            htmlFor="roomId"
+            className="block mb-2 text-gray-300 font-medium tracking-wide"
+          >
+            Enter Room ID
+          </label>
+          <input
+            type="text"
+            id="roomId"
+            placeholder="e.g., 12345"
+            className="w-full bg-black text-white px-4 py-3 rounded-xl border border-gray-700 focus:outline-none focus:ring-1 focus:ring-gray-400 placeholder-gray-500"
+          />
+        </div>
+
+        {/* Buttons */}
+        <div className="flex gap-4 w-full justify-center">
+          <button className="w-1/2 py-3 rounded-xl font-semibold bg-green-600 text-white hover:bg-green-700">
+            Join Room
+          </button>
+          <button className="w-1/2 py-3 rounded-xl font-semibold bg-orange-600 text-white hover:bg-orange-700">
+            Create Room
+          </button>
+        </div>
+
+        <p className="text-sm text-gray-500 text-center mt-4">
+          Minimal dual-tone interface — black & white theme 🖤
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default JoinCreateRoom;
