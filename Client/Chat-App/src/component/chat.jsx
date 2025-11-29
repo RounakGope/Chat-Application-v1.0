@@ -1,44 +1,102 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import {IoMdSend} from 'react-icons/io'
 import send from '../assets/send.svg'
 import {MdAttachFile} from 'react-icons/md'
+import useChatContext from '../context/ChatContext'
+import { useNavigate } from 'react-router'
+import { baseURL } from '../config/Caxios'
+import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
+
+
 
 const chat = () => {
+  const {connect,currentUser,roomId}=useChatContext();
+  const Navigate=useNavigate();
+
   const [message,setMessage]=useState([
-    {
-      content:"heello ronak",
-      sender:"Rounak",
-    },
-    {
-      content:"heasdfj alksdf jkajfs kjkljask jklaj kajk fjak jlfkaj kljasdkf jakf jaklj kaljfkl jakfj akljf klafello kaka",
-      sender:"Rajesh",
-    },
-    {
-      content:"asdfl kajsdf lk jaasd;lk jf lasdj asdlkj faskldj fkldsj fklajsdkl fjaskj klajsd kfjaslkj faskldj klasjd lakjssdfkj aslkd jklasjdf kljasdkj flaksdj fklajsdfkl jalkdfj aklsdjf klajds klajsdklf jasdklfj klasjf kajsklf jaskjl flkaj fklj fklafjkljaewklfjaj klajdskl" ,sender:"Rajesh",
-    }
+    
   ])
   const inputRef=useRef(null);
   const [input,setInput]=useState("");
   const chatBoxRef=useRef(null);
-  const [stompClient, setStompClient]=useState("");
-  const [roomId,setRoomId]=useState("");
-  const [currentUser,setCurrentUser]=useState("Rounak");
+  const [stompClient, setStompClient]=useState(null)
+  function leaveOnClick() {
+    toast.success("Left the Room Successfully");
+    Navigate("/join-create");
+  }
+
+  useEffect(()=>
+  {
+    
+  const socket = new SockJS(`${baseURL}/chat`);
+
+  const client = new Client({
+    webSocketFactory: () => socket,
+    reconnectDelay: 5000, // auto reconnect
+    onConnect: () => {
+      setStompClient(client)
+      console.log("Connected");
+      toast.success("Connected")
+
+      client.subscribe(`/topic/${roomId}`, (msg) => {
+        const newMessage = JSON.parse(msg.body);
+        setMessage((prev) => [...prev, newMessage]);
+      });
+    },
+  });
+
+  client.activate();
+
+  return () => {
+    if (client.connected) {
+      client.deactivate();
+    }
+  };
+  },[roomId])
+
+  const sendMessage=async()=>{
+    console.log("send message run")
+    if(stompClient && connect && input.trim())
+    {
+      console.log(input);
+     // console.log(currentUser);
+     // console.log(input.trim());
+      //console.log(stompClient);
+     // console.log(connect);
+    
+    const newMessage={
+      sender:currentUser,
+      content:input,
+      roomId:roomId
+    
+    }
+
+    stompClient.publish({
+      destination:`/app/sendMessage/${roomId}`,
+      body:JSON.stringify(newMessage)
+    });
+      setInput("");
+    
+  }
+}
+  
   return (
   <div>
    
    <header className='flex flex-row min-w-full justify-between fixed shadow p-4 dark:bg-gray-800 items-center'>
     <div>
-      <h1>Room No <span>2405751</span></h1>
+      <h1>Room No <span className='text-blue-600'>{roomId}</span></h1>
 
     </div>
     <div>
       <h1>
-        User: <span>Rounak Kumar Gope</span>
+        User: <span className='text-green-600 font-semibold'>{currentUser}</span>
       </h1>
     </div>
     <div>
-      <button className=" button py-2 px-3 rounded dark:bg-red-500 dark:hover:bg-red-800 transition-colors duration-300"> Leave Room</button>
+      <button onClick={leaveOnClick} className=" button py-2 px-3 rounded dark:bg-red-500 dark:hover:bg-red-800 transition-colors duration-300"> Leave Room</button>
 
     </div>
    </header>
@@ -66,13 +124,18 @@ const chat = () => {
    <div className='flex fixed bottom-0 w-full p-2 justify-center items-center glassy-morphism '>
 
       <div className='  dark:bg-gray-800 rounded-2xl flex justify-around w-2/3 shadow-lg shadow-gray-950  p-6'>
-         <input type="text" placeholder='type your message here ...' 
+         <input 
+         value={input}
+         onChange={(msg)=>{
+          setInput(msg.target.value);
+         }}
+          type="text" placeholder='type your message here ...' 
            className='h-full w-2/3 bg-slate-700 border-blue-700 rounded-full focus:outline-none px-5 py-2' />
            
            <button className='button dark:bg-blue-700 px-4 rounded-xl py-2'>
               <MdAttachFile size={20}/>
             </button>
-            <button className='button dark:bg-green-700 px-4 rounded-xl py-2'>
+            <button onClick={sendMessage} className='button dark:bg-green-700 px-4 rounded-xl py-2'>
               Send
             </button>
 

@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/room")
+@CrossOrigin("http://localhost:5173")
 public class RoomController {
 
    private RoomRepo roomRepo;
@@ -21,12 +22,11 @@ public class RoomController {
    }
 
     @PostMapping("/create-room")
-    public ResponseEntity<?> createRoom(@RequestBody String roomId)
+    public ResponseEntity<?> createRoom(@RequestBody Room room)
     {
-        if (roomRepo.findByRoomId(roomId)==null)
+        if (roomRepo.findByRoomId(room.getRoomId())==null)
         {
-           Room room=new Room();
-           room.setRoomId(roomId);
+
           Room savedRoom= roomRepo.save(room);
            return ResponseEntity.status(HttpStatus.CREATED).body(room);
         }
