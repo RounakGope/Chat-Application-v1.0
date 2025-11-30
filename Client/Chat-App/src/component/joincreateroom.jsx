@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 import { createRoom as createRoomApi,joinRoom as joinRoomApi } from "../services/roomService";
 import useChatContext from "../context/ChatContext";
 import { useNavigate } from "react-router-dom";
+import '../component/header'
+import header from "../component/header";
 
 const JoinCreateRoom = () => {
   const navigate=useNavigate();
@@ -85,7 +87,9 @@ function onhandleformChange(event)
   };
   
   return (
+    
     <div className="min-h-screen flex items-center justify-center bg-black text-white p-4">
+      
       <div className="bg-neutral-900 border border-gray-700 shadow-lg rounded-3xl p-10 flex flex-col gap-8 items-center w-full max-w-md">
         <h1 className="text-3xl font-bold text-center text-white tracking-wide">
           Join or Create Room

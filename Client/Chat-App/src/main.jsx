@@ -6,10 +6,10 @@ import {ChatProvider} from "./context/ChatContext.jsx"
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  
     <ChatProvider>
        <App />
     </ChatProvider>
    
-  </StrictMode>,
+
 )

@@ -49,10 +49,8 @@ public class RoomController {
         return ResponseEntity.ok(room);
     }
     @GetMapping("/messages/{roomId}")
-    public ResponseEntity<List<Message>> getMessages(@PathVariable String roomId,
-                                         @RequestParam(value="page",defaultValue ="0",required = false)int page,
-                                                     @RequestParam(value = "size",defaultValue = "20",required = false)int size
-    )
+    public ResponseEntity<List<Message>> getMessages(@PathVariable String roomId
+                                        )
     {
         Room room=roomRepo.findByRoomId(roomId);
         if (room==null)

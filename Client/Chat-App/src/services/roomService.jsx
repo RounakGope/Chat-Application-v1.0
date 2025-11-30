@@ -9,3 +9,8 @@ export const joinRoom=async(roomId)=>{
    const response=await httpClient.get(`room/${roomId}`)
    return response.data;
 };
+export const getMessages=async(roomId)=>
+{
+   const response=await httpClient.get(`/room/messages/${roomId}`);
+   return response.data;
+};

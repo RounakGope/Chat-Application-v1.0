@@ -8,11 +8,15 @@ import { useNavigate } from 'react-router'
 import { baseURL } from '../config/Caxios'
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { getMessages} from "../services/roomService";
+import {timeAgo} from '../config/helper'
+
+
 
 
 
 const chat = () => {
-  const {connect,currentUser,roomId}=useChatContext();
+  const {connect,currentUser,roomId,setConnect}=useChatContext();
   const Navigate=useNavigate();
 
   const [message,setMessage]=useState([
@@ -24,8 +28,45 @@ const chat = () => {
   const [stompClient, setStompClient]=useState(null)
   function leaveOnClick() {
     toast.success("Left the Room Successfully");
+    stompClient.deactivate();
+    setConnect(false);
     Navigate("/join-create");
+
   }
+  useEffect(()=>
+  {
+    const loadMessages=async()=>{
+    if(chatBoxRef.current)
+    {
+      chatBoxRef.current.scroll({
+        top:chatBoxRef.current.scrollHeight,
+        behavior:"smooth"
+      })
+    }}
+    if(connect){
+    loadMessages();
+  }
+
+  },[message])
+  useEffect(()=>{
+    const loadMessages=async()=>{
+      if(!roomId)
+      {
+        return;
+      }
+      try{
+        const messagesfromserver=await getMessages(roomId);
+        console.log(messagesfromserver);
+        setMessage(messagesfromserver);
+
+      }
+      catch(error)
+      {
+        console.log(error);
+    }
+  }
+    loadMessages();
+},[roomId]);
 
   useEffect(()=>
   {
@@ -100,8 +141,8 @@ const chat = () => {
 
     </div>
    </header>
-   <main className='  h-screen p-20 pb-40 overflow-auto'>
-    <div className='flex flex-col   gap-4'>
+   <main ref={chatBoxRef} className='  h-screen p-20 pb-40 overflow-auto'>
+    <div  className=' flex flex-col   gap-4'>
 
       {
         message.map((msg,index)=>
@@ -111,6 +152,7 @@ const chat = () => {
               <div className='w-72  dark:bg-gray-600 rounded-2xl p-4 shadow-lg shadow-slate-950'>
                 <p className='font-extrabold'>{msg.sender}</p>
                 <p className='font-thin'>{msg.content}</p>
+                <p className='font-sans text-sm text-gray-800'>{timeAgo(msg.timeStamp)}</p>
               </div>
             </div>
 
@@ -129,7 +171,16 @@ const chat = () => {
          onChange={(msg)=>{
           setInput(msg.target.value);
          }}
-          type="text" placeholder='type your message here ...' 
+         onKeyDown={(e)=>{
+            if(e.key==="Enter")
+            {
+              sendMessage();
+
+            }
+          }}
+          type="text"
+          
+           placeholder='type your message here ...' 
            className='h-full w-2/3 bg-slate-700 border-blue-700 rounded-full focus:outline-none px-5 py-2' />
            
            <button className='button dark:bg-blue-700 px-4 rounded-xl py-2'>
