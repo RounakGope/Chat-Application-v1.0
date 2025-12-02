@@ -4,6 +4,7 @@ import com.chat_app.Chat_App.Entity.Message;
 import com.chat_app.Chat_App.Entity.Room;
 import com.chat_app.Chat_App.IO.MessageRequest.MessageRequest;
 import com.chat_app.Chat_App.Repository.RoomRepo;
+import com.chat_app.Chat_App.config.AppConstants;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.time.LocalDateTime;
 
 @Controller
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(AppConstants.FRONT_END_BASE_URL)
 public class ChatController {
 
     RoomRepo roomRepo;

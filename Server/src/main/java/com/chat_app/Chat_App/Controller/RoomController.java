@@ -3,6 +3,7 @@ package com.chat_app.Chat_App.Controller;
 import com.chat_app.Chat_App.Entity.Message;
 import com.chat_app.Chat_App.Entity.Room;
 import com.chat_app.Chat_App.Repository.RoomRepo;
+import com.chat_app.Chat_App.config.AppConstants;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/room")
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(AppConstants.FRONT_END_BASE_URL)
 public class RoomController {
 
    private RoomRepo roomRepo;
