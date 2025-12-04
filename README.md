@@ -33,7 +33,6 @@ A real-time chat application built using **React (Frontend)** and **Spring Boot 
 ### **Backend (Spring Boot)**
 
 * Spring WebSocket
-* Spring Security + JWT
 * Spring Data JPA
 * PostgreSQL / MongoDB
 
@@ -77,8 +76,7 @@ VITE_WS_URL=wss://your-websocket-endpoint
 
 ```
 DB_URI=
-JWT_SECRET=
-CLOUD_UPLOAD_KEY=
+
 ```
 
 ---
@@ -109,65 +107,10 @@ java -jar target/app.jar
 * Build command: `yarn build`
 * Output: `dist`
 
-### **Backend (Railway / Render / Docker)**
+### **Backend ( / Render )**
 
-* Set environment variables
-* Expose port 8080
-* Connect to database
 
----
 
-## 🧪 API Endpoints
-
-### **Auth**
-
-```
-POST /api/auth/login
-POST /api/auth/register
-```
-
-### **Messages**
-
-```
-GET  /api/messages/{chatId}
-POST /api/messages
-```
-
----
-
-## 🔌 WebSocket Endpoints
-
-```
-/ws
-/topic/messages
-/app/send
-```
-
----
-
-## 🕒 Time Ago Utility (Frontend)
-
-```js
-export const timeAgo = (timestamp) => {
-  const diff = Date.now() - new Date(timestamp);
-  const seconds = Math.floor(diff / 1000);
-  if (seconds < 60) return `${seconds}s ago`;
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-};
-```
-
----
-
-## 📸 Screenshots
-
-*(Add UI screenshots here)*
-
----
 
 ## 📌 Roadmap
 
@@ -178,14 +121,8 @@ export const timeAgo = (timestamp) => {
 
 ---
 
-## 📝 License
-
-MIT License
-
----
 
 ## ✨ Author
 
 **Rounak Gope**
 
-If you want me to customize this README to match your exact repo structure or add badges/shields — just tell me!
